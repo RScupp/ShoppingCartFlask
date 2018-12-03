@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script type=text/javascript>
+      function addBinds() {
+        $('.addToCart').bind('click', function() {
+          var val = $("#"+this.id).val();
+          $.getJSON('/addToCart/'+$(this).attr('id')+"/"+val,
+              function(data) {
+          });
+        $("#products").load('/ #products', function() {
+           addBinds();
+           addedToCart(val);
+         });
+
+      return false;
+      });
+    }
+    function addedToCart(val) {
+      var successMsg = "<div class='alert alert-success text-center'><strong>Item added to cart!</strong>&nbsp;-&nbsp;<a href='cart'>Click here to see your cart</a></div>";
+      var errorMsg = "<div class='alert alert-danger text-center'><strong>Error adding item to cart</strong></div>";
+      if(val>0){
+        // $('div.itemAdded').stop();
+        $('div.itemAdded').stop(true, false).animate({opacity:0},0).html(successMsg).animate({opacity:1},300).animate({opacity:1},5000).animate({opacity:0},300);
+      }
+      else{
+        // $('div.itemAdded').stop();
+        $('div.itemAdded').stop(true, false).animate({opacity:0},0).html(errorMsg).animate({opacity:1},300).animate({opacity:1},5000).animate({opacity:0},300);
+      }
+
+  }
+</script>
+</head>
+<body onload="addBinds()">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <div class="container">
+    <br>
+    <br>
+  	<table id="products" class="table table-hover table-condensed">
+
+      			<thead>
+  						<tr>
+  							<th style="width:70%">Product</th>
+  							<th style="width:10%">Price</th>
+  							<th style="width:10%">Quantity</th>
+  							<th style="width:10%"></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {% for product in products %}
+  						<tr>
+  							<td data-th="Product">
+  								<div class="row">
+  									<div class="col-sm-12">
+  										<h4 class="nomargin">{{product.name}}</h4>
+  									</div>
+  								</div>
+  							</td>
+  							<td data-th="Price">${{product.getDiscountPrice()}}</td>
+  							<td data-th="Quantity">
+                  <select id={{product.productID}} name="quant" class="text-center">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+
+                </td>
+  							<td class="actions" data-th="">
+  								<button id="{{product.productID}}" class="btn btn-success btn-block addToCart">Add to cart</button>
+  							</td>
+  						</tr>
+              {% endfor %}
+  					</tbody>
+            <tfoot>
+  						<tr>
+  							<td colspan="3" class="hidden-xs"></td>
+  							<td><a href="/cart" class="btn btn-success btn-block">Cart <i class="fa fa-angle-right"></i></a></td>
+  						</tr>
+  					</tfoot>
+  	</table>
+    <div class="itemAdded"></div>
+  </div>
+</body>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script type=text/javascript>
+        $( document ).ready(function() {
+          console.log( "ready!" );
+          addBinds();
+        });
+        function addBinds() {
+          if($('#cart > tbody > tr').length == 0)
+          {
+            $("#cart").hide();
+            $("#empty").show();
+          }
+          else
+          {
+            $("#empty").hide();
+            $("#cart").show();
+          }
+          $('.increaseQuantity').bind('click', function() {
+            $.getJSON('/increaseQuantity/'+this.id,
+                function(data) {
+            });
+            $("#cartTable").load('cart #cart', function() {
+             addBinds();
+
+           });
+        //location.reload();
+        return false;
+      });
+          $('.decreaseQuantity').bind('click', function() {
+            $.getJSON('/decreaseQuantity/'+this.id,
+                function(data) {
+            });
+          $("#cartTable").load('cart #cart', function() {
+             addBinds();
+           });
+        return false;
+      });
+          $('.removeItem').bind('click', function() {
+            $.getJSON('/removeItem/'+this.id,
+                function(data) {
+            });
+          $("#cartTable").load('cart #cart', function() {
+             addBinds();
+           });
+
+        return false;
+      });
+      $('#checkout').bind('click', function() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "../checkout");
+        document.body.appendChild(form);
+        form.submit();
+      });
+}
+</script>
+</head>
+<body>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <div class="container">
+    <br>
+    <br>
+    <div id="empty" class="hide-start">
+    <h1 class="text-center"><strong>Your cart is currently empty</strong></h1>
+    <h3 class="text-center"><a href="../">Click to see the list of products</a><h3>
+    </div>
+    <div id="cartTable">
+  	<table id="cart" class="table table-hover table-condensed hide-start">
+      			<thead>
+  					<tr>
+  						<th style="width:40%">Product</th>
+  						<th style="width:10%">Price</th>
+  						<th style="width:20%">Quantity</th>
+  						<th style="width:20%" class="text-center">Subtotal</th>
+  						<th style="width:10%"></th>
+  					</tr>
+  					</thead>
+
+  					<tbody id="cartItems">
+              {% for item in cart %}
+  						<tr>
+  							<td data-th="Product">
+  								<div class="row">
+  									<div class="col-sm-12">
+  										<h4 class="nomargin">{{item.product.name}}</h4>
+  									</div>
+  								</div>
+  							</td>
+  							<td data-th="Price">${{item.product.getDiscountPrice()}}</td>
+  							<td data-th="Quantity">
+                  <button id={{item.product.productID}} class="btn btn-info btn-sm decreaseQuantity"><i class="fa fa-minus"></i></button>
+                  <span id='quantity{{item.product.productID}}'>&nbsp;{{item.quantity}}&nbsp;</span>
+                  <button id={{item.product.productID}} class="btn btn-info btn-sm increaseQuantity"><i class="fa fa-plus"></i></button>
+  							</td>
+  							<td data-th="Subtotal" class="text-center">${{item.getTotal()}}</td>
+  							<td class="actions" data-th="">
+  								<button id="{{item.product.productID}}" class="btn btn-danger btn-sm removeItem"><i class="fa fa-trash-o"></i></button>
+  							</td>
+  						</tr>
+              {% endfor %}
+  					</tbody>
+  					<tfoot>
+  						<tr class="visible-xs">
+  							<td class="text-center"><strong>Total 1.99</strong></td>
+  						</tr>
+  						<tr>
+  							<td><a href="../" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+  							<td colspan="2" class="hidden-xs"></td>
+  							<td class="hidden-xs text-center"><strong>Total ${{cart.getTotal()}}</strong></td>
+  							<td><a href="#" id="checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+  						</tr>
+  					</tfoot>
+  				</table>
+        </div>
+  </div>
+</body>
+{% endblock %}
