@@ -1,9 +1,9 @@
 ---
 applications:
-  - name: shopping_cart_rscupp2014
-    memory: 128MB
+  - name: shoppingCartRscupp2014
+    memory: 256MB
     disk_quota: 256MB
     buildpack: python_buildpack
     command: python main.py
     domain: mybluemix.net
-    host: shopping_cart_rscupp2014
+    host: shoppingCartRscupp2014

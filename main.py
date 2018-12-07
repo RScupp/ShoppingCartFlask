@@ -1,6 +1,9 @@
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import db
 from business import Product, LineItem, Cart, Order
+import os
+
+port = int(os.getenv('PORT', 30000))
 
 app = Flask(__name__)
 
@@ -47,4 +50,4 @@ def addToCart(id=None, quantity=None):
     return "nothing"
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port="8100")
+    app.run(host='0.0.0.0', port=port, debug=True)
