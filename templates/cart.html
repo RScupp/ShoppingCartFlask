@@ -97,8 +97,10 @@
   							<td data-th="Quantity">
                   <button id={{item.product.productID}} class="btn btn-info btn-sm decreaseQuantity"><i class="fa fa-minus"></i></button>
                   <span id='quantity{{item.product.productID}}'>&nbsp;{{item.quantity}}&nbsp;</span>
-                  <button id={{item.product.productID}} class="btn btn-info btn-sm increaseQuantity"><i class="fa fa-plus"></i></button>
-  							</td>
+                  {% if item.product.quantityAvailable>item.quantity %}
+                    <button id={{item.product.productID}} class="btn btn-info btn-sm increaseQuantity"><i class="fa fa-plus"></i></button>
+                  {% endif %}
+              	</td>
   							<td data-th="Subtotal" class="text-center">${{item.getTotal()}}</td>
   							<td class="actions" data-th="">
   								<button id="{{item.product.productID}}" class="btn btn-danger btn-sm removeItem"><i class="fa fa-trash-o"></i></button>

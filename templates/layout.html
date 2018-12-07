@@ -15,6 +15,10 @@ table#cart, div#empty{
 		width:20%;
 		display: inline !important;
 	}
+  table#order tbody td .form-control{
+  width:20%;
+  display: inline !important;
+}
 	.actions .btn{
 		width:36%;
 		margin:1.5em 0;
@@ -44,6 +48,17 @@ table#cart, div#empty{
 
 	table#cart tfoot td{display:block; }
 	table#cart tfoot td .btn{display:block;}
+
+  table#order thead { display: none; }
+  table#order tbody td { display: block; padding: .6rem; min-width:320px;}
+  table#order tbody tr td:first-child { background: #333; color: #fff; }
+  table#order tbody td:before {
+    content: attr(data-th); font-weight: bold;
+    display: inline-block; width: 8rem;
+  }
+
+  table#order tfoot td{display:block; }
+  table#order tfoot td .btn{display:block;}
 
   table#products thead { display: none; }
   table#products tbody td { display: block; padding: .6rem; min-width:320px;}

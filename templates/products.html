@@ -53,33 +53,114 @@
   					</thead>
   					<tbody>
               {% for product in products %}
-  						<tr>
-  							<td data-th="Product">
-  								<div class="row">
-  									<div class="col-sm-12">
-  										<h4 class="nomargin">{{product.name}}</h4>
-  									</div>
-  								</div>
-  							</td>
-  							<td data-th="Price">${{product.getDiscountPrice()}}</td>
-  							<td data-th="Quantity">
-                  <select id={{product.productID}} name="quant" class="text-center">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                  </select>
+                {% for item in cart if item.product.productID == product.productID %}
+                  {% set cartQuant = item.quantity %}
+        						<tr>
+        							<td data-th="Product">
+        								<div class="row">
+        									<div class="col-sm-12">
+        										<h4 class="nomargin">{{product.name}}</h4>
+        									</div>
+        								</div>
+        							</td>
+        							<td data-th="Price">${{product.getDiscountPrice()}}</td>
+        							<td data-th="Quantity">
+                        <select id={{product.productID}} name="quant" class="text-center">
+                          {% if product.quantityAvailable - cartQuant == 0 %}
+                            <option value="0">0</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=1 %}
+                            <option value="1">1</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=2 %}
+                            <option value="2">2</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=3 %}
+                            <option value="3">3</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=4 %}
+                            <option value="4">4</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=5 %}
+                            <option value="5">5</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=6 %}
+                            <option value="6">6</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=7 %}
+                            <option value="7">7</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=8 %}
+                            <option value="8">8</option>
+                          {% endif %}
+                          {% if product.quantityAvailable - cartQuant >=9 %}
+                            <option value="9">9</option>
+                          {% endif %}
+                        </select>
 
-                </td>
-  							<td class="actions" data-th="">
-  								<button id="{{product.productID}}" class="btn btn-success btn-block addToCart">Add to cart</button>
-  							</td>
-  						</tr>
+                      </td>
+        							<td class="actions" data-th="">
+                        {% if product.quantityAvailable - cartQuant >=1 %}
+                          <button id="{{product.productID}}" class="btn btn-success btn-block addToCart">Add to cart</button>
+                        {%else%}
+                          <button class="btn btn-danger btn-block">Out of Stock</button>
+                        {% endif %}
+        							</td>
+        						</tr>
+                  {% else %}
+                  <tr>
+                    <td data-th="Product">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <h4 class="nomargin">{{product.name}}</h4>
+                        </div>
+                      </div>
+                    </td>
+                    <td data-th="Price">${{product.getDiscountPrice()}}</td>
+                    <td data-th="Quantity">
+                      <select id={{product.productID}} name="quant" class="text-center">
+                        {% if product.quantityAvailable==0 %}
+                          <option value="0">0</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=1 %}
+                          <option value="1">1</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=2 %}
+                          <option value="2">2</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=3 %}
+                          <option value="3">3</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=4 %}
+                          <option value="4">4</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=5 %}
+                          <option value="5">5</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=6 %}
+                          <option value="6">6</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=7 %}
+                          <option value="7">7</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=8 %}
+                          <option value="8">8</option>
+                        {% endif %}
+                        {% if product.quantityAvailable>=9 %}
+                          <option value="9">9</option>
+                        {% endif %}
+                      </select>
+
+                    </td>
+                    <td class="actions" data-th="">
+                      {% if product.quantityAvailable>=1 %}
+                        <button id="{{product.productID}}" class="btn btn-success btn-block addToCart">Add to cart</button>
+                      {%else%}
+                        <button class="btn btn-danger btn-block">Out of Stock</button>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
               {% endfor %}
   					</tbody>
             <tfoot>

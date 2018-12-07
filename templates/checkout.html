@@ -6,61 +6,6 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <script type=text/javascript>
-        $( document ).ready(function() {
-          console.log( "ready!" );
-          addBinds();
-        });
-        function addBinds() {
-          if($('#cart > tbody > tr').length == 0)
-          {
-            $("#cart").hide();
-            $("#empty").show();
-          }
-          else
-          {
-            $("#empty").hide();
-            $("#cart").show();
-          }
-          $('.increaseQuantity').bind('click', function() {
-            $.getJSON('/increaseQuantity/'+this.id,
-                function(data) {
-            });
-            $("#cartTable").load('cart #cart', function() {
-             addBinds();
-
-           });
-        //location.reload();
-        return false;
-      });
-          $('.decreaseQuantity').bind('click', function() {
-            $.getJSON('/decreaseQuantity/'+this.id,
-                function(data) {
-            });
-          $("#cartTable").load('cart #cart', function() {
-             addBinds();
-           });
-        return false;
-      });
-          $('.removeItem').bind('click', function() {
-            $.getJSON('/removeItem/'+this.id,
-                function(data) {
-            });
-          $("#cartTable").load('cart #cart', function() {
-             addBinds();
-           });
-
-        return false;
-      });
-      $('#checkout').bind('click', function() {
-        var form = document.createElement("form");
-        form.setAttribute("method", "POST");
-        form.setAttribute("action", "../checkout");
-        document.body.appendChild(form);
-        form.submit();
-      });
-}
-</script>
 </head>
 <body>
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -68,8 +13,8 @@
     <br>
     <br>
     <h1 class="text-center"><strong>Thank you for your order!</strong></h1>
-    <div id="cartTable">
-  	<table id="cart" class="table table-hover table-condensed hide-start">
+    <div id="orderTable">
+  	<table id="order" class="table table-hover table-condensed hide-start">
       			<thead>
   					<tr>
   						<th style="width:70%">Product</th>
@@ -79,8 +24,8 @@
   					</tr>
   					</thead>
 
-  					<tbody id="cartItems">
-              {% for item in cart %}
+  					<tbody id="orderItems">
+              {% for item in order %}
   						<tr>
   							<td data-th="Product">
   								<div class="row">
@@ -93,13 +38,13 @@
   							<td class="text-center" data-th="Quantity">
                   <span class="text-center" id='quantity{{item.product.productID}}'>&nbsp;{{item.quantity}}&nbsp;</span>
                 </td>
-  							<td data-th="Subtotal" class="text-center">${{item.getTotal()}}</td>
+  							<td data-th="Subtotal" class="text-center">${{"%.2f" % item.getTotal()}}</td>
   						</tr>
               {% endfor %}
               <tr>
                 <td colspan="2" class="hidden-xs"></td>
                 <td><strong>Order Total:</strong></td>
-                <td class="text-center">${{cart.getTotal()}}</td>
+                <td class="text-center">${{order.getTotal()}}</td>
               </tr>
   					</tbody>
   				</table>
