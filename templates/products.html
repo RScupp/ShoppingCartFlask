@@ -26,11 +26,11 @@
       var errorMsg = "<div class='alert alert-danger text-center'><strong>Error adding item to cart</strong></div>";
       if(val>0){
         // $('div.itemAdded').stop();
-        $('div.itemAdded').stop(true, false).animate({opacity:0},0).html(successMsg).animate({opacity:1},300).animate({opacity:1},5000).animate({opacity:0},300);
+        $('div.top-success').fadeIn(500).delay(1500).fadeOut(500);
       }
       else{
         // $('div.itemAdded').stop();
-        $('div.itemAdded').stop(true, false).animate({opacity:0},0).html(errorMsg).animate({opacity:1},300).animate({opacity:1},5000).animate({opacity:0},300);
+        $('div.top-danger').fadeIn(500).delay(1500).fadeOut(500);
       }
 
   }
@@ -39,6 +39,8 @@
 <body onload="addBinds()">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <div class="container">
+    <div class='top-success alert alert-success text-center'><strong>Item added to cart!</strong>&nbsp;-&nbsp;<a href='cart'>Click here to see your cart</a></div>
+    <div class='top-danger alert alert-danger text-center'><strong>Error adding item to cart</strong></div>
     <br>
     <br>
   	<table id="products" class="table table-hover table-condensed">
@@ -170,7 +172,7 @@
   						</tr>
   					</tfoot>
   	</table>
-    <div class="itemAdded"></div>
+
   </div>
 </body>
 {% endblock %}
